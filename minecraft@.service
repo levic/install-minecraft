@@ -1,0 +1,21 @@
+[Unit]
+Description=Minecraft Server: %i
+After=network.target
+
+[Service]
+WorkingDirectory=%h/minecraft/bedrock_server
+
+#User=levi
+#Group=levi
+
+Restart=on-success
+
+ExecStart=%h/minecraft/bedrock_server/bedrock_server
+#ExecStart=/usr/bin/screen -Dm -S minecraft-%i bedrock_server
+#ExecStop=/usr/bin/screen -p0 -S minecraft-%i -X eval 'stuff "stop"\015'
+
+StandardOutput=syslog
+StandardError=syslog
+
+[Install]
+WantedBy=default.target
