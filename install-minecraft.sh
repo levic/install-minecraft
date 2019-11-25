@@ -36,9 +36,13 @@ function backup() {
 		backup_zip="$backup_dir/minecraft-$( date '+%Y%m%d-%H%M%S' ).zip"
 		echo "Backing up to"
 		mkdir -p "$backup_dir"
-		zip -r "$backup_zip" "$target_dir/worlds"
+		zip -r "$backup_zip" "$target_dir/worlds" "$target_dir/bedrock_server/server.properties" "$target_dir/bedrock_server/permissions.json"
 		backed_up=true
 	fi
+}
+
+function restore_settings() {
+	"$( dirname "${BASH_SOURCE[0]}" )"/restore-settings.sh "$target_dir"
 }
 
 if $force || ! [[ -e $zipfile ]] ; then
@@ -59,6 +63,9 @@ if $force || ! [[ $expected_exe_size -eq $actual_exe_size ]] ; then
 	echo "Extracting"
 	mkdir -p bedrock_server
 	unzip -o -d bedrock_server "$zipfile"
+
+	# config files will have been overwritten; restore settings
+	restore_settings
 else
 	echo "Skipping extraction (executable is already the expected size)"
 fi
