@@ -1,14 +1,7 @@
 #!/bin/bash -e
 set -o pipefail
 
-# can get the latest version number from https://minecraft.gamepedia.com/Bedrock_Dedicated_Server
-version="1.14.1.4"
-zipfile="bedrock-server-$version.zip"
-download_url="https://minecraft.azureedge.net/bin-linux/$zipfile"
-
-target_dir=~/minecraft
-backup_dir=~/backup
-script_dir="$( readlink -f "$( dirname "${BASH_SOURCE[0]}" )" )"
+source "$( dirname "${BASH_SOURCE[0]}")/settings.inc"
 
 echo "This will install minecraft bedrock edition"
 echo
