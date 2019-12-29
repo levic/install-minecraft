@@ -2,12 +2,13 @@
 set -o pipefail
 
 # can get the latest version number from https://minecraft.gamepedia.com/Bedrock_Dedicated_Server
-version="1.13.2.0"
+version="1.14.1.4"
 zipfile="bedrock-server-$version.zip"
 download_url="https://minecraft.azureedge.net/bin-linux/$zipfile"
 
 target_dir=~/minecraft
 backup_dir=~/backup
+script_dir="$( readlink -f "$( dirname "${BASH_SOURCE[0]}" )" )"
 
 echo "This will install minecraft bedrock edition"
 echo
@@ -17,6 +18,7 @@ echo "- Download to:   $target_dir/$zipfile"
 echo "- Extract to:    $target_dir/bedrock_server"
 echo "- Enable systemd user services for $USER"
 echo "- Backup to:     $backup_dir"
+echo "- Scripts dir:   $script_dir"
 echo
 echo "Press Enter to continue or Ctrl-C to abort"
 read
@@ -36,13 +38,13 @@ function backup() {
 		backup_zip="$backup_dir/minecraft-$( date '+%Y%m%d-%H%M%S' ).zip"
 		echo "Backing up to"
 		mkdir -p "$backup_dir"
-		zip -r "$backup_zip" "$target_dir/worlds" "$target_dir/bedrock_server/server.properties" "$target_dir/bedrock_server/permissions.json"
+		( cd "$target_dir" && zip -r "$backup_zip" worlds bedrock_server/server.properties bedrock_server/permissions.json )
 		backed_up=true
 	fi
 }
 
 function restore_settings() {
-	"$( dirname "${BASH_SOURCE[0]}" )"/restore-settings.sh "$target_dir"
+	"$script_dir/restore-settings.sh" "$target_dir/bedrock_server"
 }
 
 if $force || ! [[ -e $zipfile ]] ; then
@@ -82,7 +84,7 @@ echo "Enabling systemd service"
 mkdir -p ~/.config/systemd/user/
 cd ~/.config/systemd/user/
 if ! [[ -L minecraft@.service ]] ; then
-	ln -s "$( dirname "${BASH_SOURCE[0]}" )"/minecraft@.service minecraft@.service
+	ln -s "$script_dir/minecraft@.service" minecraft@.service
 fi
 
 mkdir -p ~/.config/systemd/user/default.target.wants

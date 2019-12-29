@@ -8,7 +8,7 @@ fi
 
 cd -- "$1"
 
-[[ -e server.properties ]] || { echo 'server.properiees missing' ; exit 1 ; }
+[[ -e server.properties ]] || { echo 'server.properties missing' ; exit 1 ; }
 
 crudini --set server.properties '' difficulty normal
 crudini --set server.properties '' level-name "The Cameron World II (577830886)"
