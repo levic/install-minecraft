@@ -7,4 +7,5 @@
 
 ## Installation
 * Check settings in `settings.inc`
+* Fill out `whitelist.json` in `restore-settings.sh`
 * Run `./install-minecraft.sh`
