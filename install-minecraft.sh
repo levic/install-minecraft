@@ -29,7 +29,7 @@ backed_up=false
 function backup() {
 	if ! $backed_up ; then
 		backup_zip="$backup_dir/minecraft-$( date '+%Y%m%d-%H%M%S' ).zip"
-		echo "Backing up to"
+		echo "Backing up to $backup_zip"
 		mkdir -p "$backup_dir"
 		( cd "$target_dir" && zip -r "$backup_zip" worlds bedrock_server/server.properties bedrock_server/permissions.json )
 		backed_up=true
