@@ -3,12 +3,12 @@ set -o pipefail
 
 source "$( dirname "${BASH_SOURCE[0]}")/settings.inc"
 
-if [[ $1 == "" ]] || [[ $1 == "--help" ]] ; then
+if [[ $1 == "--help" ]] ; then
 	echo "Usage: $0 bedrock_server_dir"
 	echo
 fi
 
-cd -- "$1"
+cd -- "${1:-${target_dir}/bedrock_server}"
 
 [[ -e server.properties ]] || { echo 'server.properties missing' ; exit 1 ; }
 
